@@ -42,5 +42,4 @@ public class User1 implements Serializable {
                 .append("money", money)
                 .toString();
     }
-
 }

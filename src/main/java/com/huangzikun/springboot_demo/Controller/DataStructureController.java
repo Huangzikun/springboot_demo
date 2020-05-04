@@ -4,14 +4,14 @@ import com.huangzikun.springboot_demo.Example.Clone.CloneClass;
 import com.huangzikun.springboot_demo.Example.Serialization.User1;
 import com.huangzikun.springboot_demo.Example.Serialization.User2;
 import org.apache.catalina.User;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 public class DataStructureController {
@@ -24,6 +24,8 @@ public class DataStructureController {
     double d;
     char c;
     boolean bo;
+
+    public ConcurrentHashMap<String, Integer> a = new ConcurrentHashMap<>();
 
     /**
      * @link https://www.cnblogs.com/LiaHon/p/11043238.html
@@ -122,10 +124,29 @@ public class DataStructureController {
             System.out.println("io" + ioException.getMessage());
         } catch (ClassNotFoundException classNotFoundException) {
             System.out.println("class" + classNotFoundException.getMessage());
-
         }
-
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @ResponseBody
+    public void add(@RequestParam String key, @RequestParam Integer i) {
+        a.put(key, i);
+        System.out.println(a);
+    }
 
+    @RequestMapping(value = "/t", method = RequestMethod.GET)
+    @ResponseBody
+    public void t() {
+        int[] intArr = new int[]{13, 144};
+
+        System.out.println(Arrays.toString(intArr));
+        this.modify(intArr);
+        System.out.println(Arrays.toString(intArr));
+    }
+
+    void modify(int[] intArr) {
+        int temp = intArr[0];
+        intArr[0] = intArr[1];
+        intArr[1] = temp;
+    }
 }
